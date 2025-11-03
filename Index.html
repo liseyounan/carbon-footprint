@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>🎅 Merry Carbon Footprint 🎄</title>
+<style>
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Poppins', sans-serif;
+  color: #fff;
+  text-align: center;
+  overflow: hidden;
+  height: 100vh;
+  background: url('https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=1500&q=80') no-repeat center center/cover;
+}
+
+/* 어두운 필터로 글씨 대비 높이기 */
+body::before {
+  content: "";
+  position: fixed;
+  top: 0; left: 0; width: 100%; height: 100%;
+  background: rgba(0,0,0,0.4);
+  z-index: -1;
+}
+
+/* 제목 */
+h1 {
+  margin-top: 40px;
+  font-size: 2.5em;
+  color: #fff;
+  text-shadow: 2px 2px 10px #000;
+}
+
+/* 카드 */
+.container {
+  width: 380px;
+  margin: 40px auto;
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(8px);
+  border-radius: 20px;
+  padding: 30px;
+  box-shadow: 0 0 25px rgba(255,255,255,0.4);
+  border: 2px solid rgba(255,255,255,0.25);
+}
+
+/* 라벨 & 선택창 */
+label {
+  display: block;
+  font-size: 1.1em;
+  margin-top: 12px;
+  color: #ffebcd;
+}
+select {
+  width: 80%;
+  padding: 8px;
+  border: none;
+  border-radius: 8px;
+  margin-top: 5px;
+  font-size: 1em;
+}
+
+/* 버튼 */
+button {
+  background: linear-gradient(to right, #ff3333, #ff9900);
+  border: none;
+  padding: 10px 25px;
+  color: white;
+  font-weight: bold;
+  font-size: 1.1em;
+  border-radius: 10px;
+  cursor: pointer;
+  margin-top: 20px;
+  transition: 0.3s;
+}
+button:hover {
+  transform: scale(1.05);
+}
+
+/* 결과 표시 */
+#result {
+  margin-top: 25px;
+  font-size: 1.3em;
+  color: #fff;
+}
+.bar {
+  margin: 15px auto;
+  width: 80%;
+  height: 20px;
+  background: #fff3;
+  border-radius: 10px;
+  overflow: hidden;
+}
+.fill {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(to right, #0f0, #ff0, #f00);
+  transition: width 1s;
+}
+
+/* 눈 내리는 효과 */
+.snow {
+  position: fixed;
+  width: 10px; height: 10px;
+  background: white;
+  border-radius: 50%;
+  top: -10px;
+  animation: fall linear infinite;
+  opacity: 0.8;
+}
+@keyframes fall {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(100vh); opacity: 0; }
+}
+</style>
+</head>
+<body>
+<h1>🎄 Merry Carbon Footprint 🎅</h1>
+
+<div class="container">
+  <label>🚗 교통수단</label>
+  <select id="transport">
+    <option value="2">버스 통학</option>
+    <option value="5">자가용</option>
+    <option value="1">자전거/도보</option>
+  </select>
+
+  <label>🍔 식습관</label>
+  <select id="diet">
+    <option value="4">육식 위주</option>
+    <option value="2">혼합형</option>
+    <option value="1">채식 위주</option>
+  </select>
+
+  <label>💡 전기 사용량</label>
+  <select id="electricity">
+    <option value="5">높음 (PC·TV 장시간)</option>
+    <option value="3">보통</option>
+    <option value="1">절약형</option>
+  </select>
+
+  <button onclick="calc()">🎁 계산하기</button>
+
+  <div id="result"></div>
+  <div class="bar"><div class="fill" id="barFill"></div></div>
+</div>
+
+<script>
+// 눈 효과
+for (let i = 0; i < 40; i++) {
+  const snow = document.createElement('div');
+  snow.classList.add('snow');
+  snow.style.left = Math.random() * 100 + 'vw';
+  snow.style.animationDuration = 3 + Math.random() * 5 + 's';
+  snow.style.animationDelay = Math.random() * 5 + 's';
+  snow.style.width = snow.style.height = (5 + Math.random() * 8) + 'px';
+  document.body.appendChild(snow);
+}
+
+// 계산 기능
+function calc() {
+  const t = +document.getElementById('transport').value;
+  const d = +document.getElementById('diet').value;
+  const e = +document.getElementById('electricity').value;
+  const total = t + d + e;
+
+  const fill = document.getElementById('barFill');
+  const result = document.getElementById('result');
+  const percent = Math.min(total * 10, 100);
+  fill.style.width = percent + "%";
+
+  let msg = "";
+  if (total <= 5) msg = "🎄 지구가 환하게 웃어요!";
+  else if (total <= 8) msg = "🦌 조금 더 절약해볼까요?";
+  else msg = "🔥 산타가 더위를 느끼고 있어요!";
+
+  result.innerHTML = `<b>탄소 점수:</b> ${total}kg CO₂/day<br>${msg}`;
+}
+</script>
+</body>
+</html>
